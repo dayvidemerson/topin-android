@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">Topin</string>
+    <string name="version">Versão: 0.0.1</string>
 </resources>

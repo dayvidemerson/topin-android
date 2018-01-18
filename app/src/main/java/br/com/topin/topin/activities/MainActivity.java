@@ -1,7 +1,9 @@
-package br.com.topin.topin;
+package br.com.topin.topin.activities;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+
+import br.com.topin.topin.R;
 
 public class MainActivity extends AppCompatActivity {
 

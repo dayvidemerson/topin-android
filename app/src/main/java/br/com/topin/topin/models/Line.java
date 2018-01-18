@@ -9,14 +9,16 @@ public class Line {
     private String name;
     private String slug;
     private String description;
+    private PointLine[] points;
 
     public Line() { }
 
-    public Line(Long id, String name, String slug, String description) {
+    public Line(Long id, String name, String slug, String description, PointLine[] points) {
         this.id = id;
         this.name = name;
         this.slug = slug;
         this.description = description;
+        this.points = points;
     }
 
     public Long getId() {
@@ -49,5 +51,13 @@ public class Line {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public PointLine[] getPoints() {
+        return points;
+    }
+
+    public void setPoints(PointLine[] points) {
+        this.points = points;
     }
 }

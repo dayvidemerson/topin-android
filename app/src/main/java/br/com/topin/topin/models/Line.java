@@ -1,24 +1,35 @@
 package br.com.topin.topin.models;
 
+import android.arch.persistence.room.Entity;
+import android.arch.persistence.room.Ignore;
+import android.arch.persistence.room.PrimaryKey;
+import android.arch.persistence.room.Relation;
+
+import java.util.List;
+
 /**
  * Created by dayvid on 18-01-2018.
  */
 
+@Entity
 public class Line {
+    @PrimaryKey
     private Long id;
     private String name;
     private String slug;
     private String description;
-    private PointLine[] points;
 
+    @Ignore
+    private List<Point> points;
+
+    @Ignore
     public Line() { }
 
-    public Line(Long id, String name, String slug, String description, PointLine[] points) {
+    public Line(Long id, String name, String slug, String description) {
         this.id = id;
         this.name = name;
         this.slug = slug;
         this.description = description;
-        this.points = points;
     }
 
     public Long getId() {
@@ -53,11 +64,11 @@ public class Line {
         this.description = description;
     }
 
-    public PointLine[] getPoints() {
+    public List<Point> getPoints() {
         return points;
     }
 
-    public void setPoints(PointLine[] points) {
+    public void setPoints(List<Point> points) {
         this.points = points;
     }
 }

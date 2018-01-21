@@ -3,21 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:paddingLeft="@dimen/padding_landscape_horizontal"
-    android:paddingRight="@dimen/padding_landscape_horizontal"
-    android:paddingTop="@dimen/padding_landscape_vertical"
-    android:paddingBottom="@dimen/padding_landscape_vertical"
+    android:paddingHorizontal="@dimen/padding_landscape_horizontal"
+    android:paddingVertical="@dimen/padding_landscape_vertical"
     tools:context="br.com.topin.topin.activities.MainActivity">
 
     <FrameLayout
         android:id="@+id/frameMain"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="50dp"
-        android:minWidth="50dp" />
 
 </android.support.constraint.ConstraintLayout>

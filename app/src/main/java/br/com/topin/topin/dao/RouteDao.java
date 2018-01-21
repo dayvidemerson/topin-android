@@ -9,24 +9,20 @@ import java.util.List;
 
 import br.com.topin.topin.models.Route;
 
-/**
- * Created by dayvid on 19-01-2018.
- */
-
 @Dao
 public interface RouteDao {
     @Insert
-    public void create(Route route);
+    void create(Route route);
 
     @Insert
-    public void bulkCreate(List<Route> routes);
+    void bulkCreate(List<Route> routes);
 
     @Update
-    public void update(Route route);
+    void update(Route route);
 
     @Query("SELECT * FROM route WHERE id = :id")
-    public Route get(Long id);
+    Route get(Long id);
 
     @Query("SELECT * FROM route")
-    public List<Route> all();
+    List<Route> all();
 }

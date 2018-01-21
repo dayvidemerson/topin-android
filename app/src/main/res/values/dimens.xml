@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="title_splashscreen">24sp</dimen>
+    <dimen name="version_splashscreen">15sp</dimen>
+    <dimen name="padding_landscape_horizontal">16dp</dimen>
+    <dimen name="padding_landscape_vertical">24dp</dimen>
+    <dimen name="margin_field_vertical">12dp</dimen>
+    <dimen name="list_item_height">48dp</dimen>
+    <dimen name="status_title">24dp</dimen>
+    <dimen name="elevation">4dp</dimen>
+</resources>

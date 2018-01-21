@@ -14,10 +14,6 @@ import java.util.List;
 import br.com.topin.topin.converters.StringListConverter;
 import br.com.topin.topin.converters.TimeConverter;
 
-/**
- * Created by dayvid on 18-01-2018.
- */
-
 @Entity(
     indices = @Index(value = "line_id", name = "idx_schedule_line"),
     foreignKeys = @ForeignKey(

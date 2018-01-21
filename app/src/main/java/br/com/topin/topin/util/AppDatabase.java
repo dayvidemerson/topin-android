@@ -14,13 +14,9 @@ import br.com.topin.topin.models.Point;
 import br.com.topin.topin.models.Route;
 import br.com.topin.topin.models.Schedule;
 
-/**
- * Created by dayvid on 19-01-2018.
- */
-
 @Database(
-        version = 1,
-        entities = { Line.class, Marker.class, Point.class, Route.class, Schedule.class }
+    version = 1,
+    entities = { Line.class, Marker.class, Point.class, Route.class, Schedule.class }
 )
 public abstract class AppDatabase extends RoomDatabase {
     abstract public LineDao lineDao();

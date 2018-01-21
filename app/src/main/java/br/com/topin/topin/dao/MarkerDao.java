@@ -9,24 +9,20 @@ import java.util.List;
 
 import br.com.topin.topin.models.Marker;
 
-/**
- * Created by dayvid on 18-01-2018.
- */
-
 @Dao
 public interface MarkerDao {
     @Insert
-    public void create(Marker marker);
+    void create(Marker marker);
 
     @Insert
-    public void bulkCreate(List<Marker> markers);
+    void bulkCreate(List<Marker> markers);
 
     @Update
-    public void update(Marker marker);
+    void update(Marker marker);
 
     @Query("SELECT * FROM marker WHERE id = :id")
-    public Marker get(Long id);
+    Marker get(Long id);
 
     @Query("SELECT * FROM marker")
-    public List<Marker> all();
+    List<Marker> all();
 }

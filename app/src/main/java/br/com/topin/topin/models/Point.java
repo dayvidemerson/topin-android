@@ -7,10 +7,6 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
-/**
- * Created by dayvid on 18-01-2018.
- */
-
 @Entity(
     indices = @Index(value = "line_id", name = "idx_point_line"),
     foreignKeys = @ForeignKey(

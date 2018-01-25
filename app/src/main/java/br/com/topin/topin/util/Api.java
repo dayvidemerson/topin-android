@@ -5,13 +5,13 @@ import retrofit2.converter.gson.GsonConverterFactory;
 
 public class Api {
     private static String BASE_URL = "https://topin.herokuapp.com/api/";
-    private static Retrofit retrofit;
+    private static Retrofit sRetrofit;
 
     public static Retrofit getRetrofit() {
-        retrofit = new Retrofit.Builder()
+        sRetrofit = new Retrofit.Builder()
                 .baseUrl(BASE_URL)
                 .addConverterFactory(GsonConverterFactory.create())
                 .build();
-        return retrofit;
+        return sRetrofit;
     }
 }

@@ -9,8 +9,8 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface CityService {
-    @GET("cities/")
-    Call<City> get(@Query("id") Long id);
+    @GET("cities/{id}/")
+    Call<City> get(@Path("id") Long id);
 
     @GET("cities/")
     Call<List<City>> all();

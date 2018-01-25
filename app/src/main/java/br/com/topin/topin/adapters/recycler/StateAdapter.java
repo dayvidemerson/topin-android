@@ -14,35 +14,35 @@ import br.com.topin.topin.models.State;
 
 public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> {
 
-    private List<State> states;
+    private List<State> mStates;
     private int lastSelectedPosition = -1;
 
     public StateAdapter(List<State> states) {
-        this.states = states;
+        this.mStates = states;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.region_line_view, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_region, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.getTxtName().setText(states.get(position).getName());
+        holder.getTxtName().setText(mStates.get(position).getName());
         holder.getRadioRegion().setChecked(lastSelectedPosition == position);
     }
 
     @Override
     public int getItemCount() {
-        return states != null ? states.size() : 0;
+        return mStates != null ? mStates.size() : 0;
     }
 
     public State getItemSelected() {
-        return lastSelectedPosition == -1 ? null : states.get(lastSelectedPosition);
+        return lastSelectedPosition == -1 ? null : mStates.get(lastSelectedPosition);
     }
 
     public void setStates(List<State> states) {
-        this.states = states;
+        this.mStates = states;
         notifyDataSetChanged();
     }
 

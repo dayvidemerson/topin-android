@@ -5,14 +5,15 @@ import java.util.List;
 import br.com.topin.topin.models.Route;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface RouteService {
     @GET("routes/{id}/")
-    public Route get(@Path("id") Long id);
+    Route get(@Path("id") Long id);
 
     @GET("routes/")
-    public List<Route> all();
+    List<Route> all();
 
-    @GET("routes/?city={city}")
-    public List<Route> filter(@Path("city") String city);
+    @GET("routes/")
+    List<Route> filter(@Query("city") String city);
 }

@@ -13,35 +13,35 @@ import br.com.topin.topin.R;
 import br.com.topin.topin.models.City;
 
 public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
-    private List<City> cities;
-    private int lastSelectedPosition = -1;
+    private List<City> mCities;
+    private int mLastSelectedPosition = -1;
 
     public CityAdapter(List<City> cities) {
-        this.cities = cities;
+        this.mCities = cities;
     }
 
     @Override
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.region_line_view, parent, false));
+        return new ViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.item_region, parent, false));
     }
 
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        holder.getTxtName().setText(cities.get(position).getName());
-        holder.getRadioRegion().setChecked(lastSelectedPosition == position);
+        holder.getTxtName().setText(mCities.get(position).getName());
+        holder.getRadioRegion().setChecked(mLastSelectedPosition == position);
     }
 
     @Override
     public int getItemCount() {
-        return cities != null ? cities.size() : 0;
+        return mCities != null ? mCities.size() : 0;
     }
 
     public City getItemSelected() {
-        return lastSelectedPosition == -1 ? null : cities.get(lastSelectedPosition);
+        return mLastSelectedPosition == -1 ? null : mCities.get(mLastSelectedPosition);
     }
 
-    public void setCities(List<City> cities) {
-        this.cities = cities;
+    public void setCities(List<City> mCities) {
+        this.mCities = mCities;
         notifyDataSetChanged();
     }
 
@@ -59,7 +59,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
             radioRegion.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    lastSelectedPosition = getAdapterPosition();
+                    mLastSelectedPosition = getAdapterPosition();
                     notifyDataSetChanged();
                 }
 
@@ -76,7 +76,7 @@ public class CityAdapter extends RecyclerView.Adapter<CityAdapter.ViewHolder> {
 
         @Override
         public void onClick(View view) {
-            lastSelectedPosition = getAdapterPosition();
+            mLastSelectedPosition = getAdapterPosition();
             notifyDataSetChanged();
         }
     }

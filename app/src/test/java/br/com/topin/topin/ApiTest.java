@@ -1,7 +1,5 @@
 package br.com.topin.topin;
 
-import android.util.Log;
-
 import org.junit.Assert;
 import org.junit.Test;
 

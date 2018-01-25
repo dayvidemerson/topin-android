@@ -2,6 +2,7 @@ package br.com.topin.topin.fragments;
 
 import android.app.Fragment;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,6 +20,7 @@ import java.util.List;
 
 import br.com.topin.topin.R;
 import br.com.topin.topin.activities.MainActivity;
+import br.com.topin.topin.activities.MapActivity;
 import br.com.topin.topin.adapters.recycler.StateAdapter;
 import br.com.topin.topin.models.State;
 import br.com.topin.topin.services.StateService;
@@ -28,13 +30,27 @@ import retrofit2.Callback;
 import retrofit2.Response;
 
 public class StateSelectFragment extends Fragment {
-    private List<State> states;
-    private StateAdapter adapter;
+    private List<State> mStates;
+    private StateAdapter mStateAdapter;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setHasOptionsMenu(true);
+
+        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        String city = sharedPreferences.getString(getString(R.string.city), null);
+        String state = sharedPreferences.getString(getString(R.string.state), null);
+
+        if (city != null) {
+            Intent intent = new Intent(getActivity(), MapActivity.class);
+            startActivity(intent);
+        } else if (state != null) {
+            ((MainActivity) getActivity()).startFragment(new CitySelectFragment());
+        }
+
+
     }
 
     @Nullable
@@ -55,8 +71,8 @@ public class StateSelectFragment extends Fragment {
         RecyclerView recyclerView = view.findViewById(R.id.recyclerRegion);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        adapter = new StateAdapter(states);
-        recyclerView.setAdapter(adapter);
+        mStateAdapter = new StateAdapter(mStates);
+        recyclerView.setAdapter(mStateAdapter);
     }
 
     private void loadStates() {
@@ -75,10 +91,9 @@ public class StateSelectFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.action_save:
-                State state = adapter.getItemSelected();
+                State state = mStateAdapter.getItemSelected();
 
                 if (state != null) {
-                    SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(getString(R.string.state), state.getSlug());
                     editor.apply();
@@ -96,8 +111,8 @@ public class StateSelectFragment extends Fragment {
         @Override
         public void onResponse(@NonNull Call<List<State>> call, @NonNull Response<List<State>> response) {
             if (response.isSuccessful()) {
-                states = response.body();
-                adapter.setStates(states);
+                mStates = response.body();
+                mStateAdapter.setStates(mStates);
                 ((MainActivity) getActivity()).closeProgress();
             }
         }

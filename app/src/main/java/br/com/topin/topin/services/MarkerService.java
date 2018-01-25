@@ -9,12 +9,12 @@ import retrofit2.http.Path;
 import retrofit2.http.Query;
 
 public interface MarkerService {
-    @GET("markers/")
-    Call<Marker> get(@Query("id") Long id);
+    @GET("markers/{id}/")
+    Call<Marker> get(@Path("id") Long id);
 
     @GET("markers/")
     Call<List<Marker>> all();
 
-    @GET("markers/?city={city}")
-    Call<List<Marker>> filter(@Path("city") String city);
+    @GET("markers/")
+    Call<List<Marker>> filter(@Query("city") String city);
 }

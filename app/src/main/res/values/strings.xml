@@ -1,12 +1,15 @@
 <resources>
     <string name="app_name">Topin</string>
     <string name="version">Versão: 0.0.1</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="choose_your_state">Escolha seu estado</string>
     <string name="city">cidade</string>
     <string name="state">estado</string>
     <string name="next">Continuar</string>
     <string name="loading">Carregando...</string>
+    <string name="title_activity_map">Map</string>
+    <string name="title_activity_main2">Main2Activity</string>
+    <string name="title_favorites">Favoritas</string>
+    <string name="title_lines">Linhas</string>
+    <string name="title_points">Pontos</string>
+    <string name="title_routes">Rotas</string>
 </resources>

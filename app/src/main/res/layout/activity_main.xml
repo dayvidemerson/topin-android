@@ -10,14 +10,8 @@
     tools:context="br.com.topin.topin.activities.MainActivity">
 
     <FrameLayout
-        android:id="@+id/frameMain"
+        android:id="@+id/frame_main"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
-
-    <ProgressBar
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:minHeight="50dp"
-        android:minWidth="50dp" />
 
 </android.support.constraint.ConstraintLayout>

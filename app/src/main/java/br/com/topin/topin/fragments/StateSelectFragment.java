@@ -68,7 +68,7 @@ public class StateSelectFragment extends Fragment {
     }
 
     private void setupRecycler(View view) {
-        RecyclerView recyclerView = view.findViewById(R.id.recyclerRegion);
+        RecyclerView recyclerView = view.findViewById(R.id.recycler_region);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
         mStateAdapter = new StateAdapter(mStates);

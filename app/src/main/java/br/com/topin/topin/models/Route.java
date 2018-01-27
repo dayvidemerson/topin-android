@@ -25,20 +25,20 @@ public class Route {
     private String city;
 
     @ColumnInfo(name = "front_id")
-    private Long frontId;
+    private Long front;
 
     @ColumnInfo(name = "back_id")
-    private Long backId;
+    private Long back;
 
     @Ignore
     public Route() { }
 
-    public Route(Long id, String name, String slug, Long frontId, Long backId, String city) {
+    public Route(Long id, String name, String slug, Long front, Long back, String city) {
         this.id = id;
         this.name = name;
         this.slug = slug;
-        this.frontId = frontId;
-        this.backId = backId;
+        this.front = front;
+        this.back = back;
         this.city = city;
     }
 
@@ -74,19 +74,19 @@ public class Route {
         this.city = city;
     }
 
-    public Long getFrontId() {
-        return frontId;
+    public Long getFront() {
+        return front;
     }
 
-    public void setFrontId(Long frontId) {
-        this.frontId = frontId;
+    public void setFront(Long frontId) {
+        this.front= frontId;
     }
 
-    public Long getBackId() {
-        return backId;
+    public Long getBack() {
+        return back;
     }
 
-    public void setBackId(Long backId) {
-        this.backId = backId;
+    public void setBack(Long back) {
+        this.back= back;
     }
 }

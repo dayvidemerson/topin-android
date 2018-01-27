@@ -4,14 +4,14 @@ import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.PrimaryKey;
 
-/**
- * Created by dayvid on 18-01-2018.
- */
+import com.google.android.gms.maps.model.LatLng;
 
 @Entity
 public class Marker {
     @PrimaryKey
     private Long id;
+    private String name;
+    private String slug;
     private Double longitude;
     private Double latitude;
     private String type;
@@ -21,8 +21,10 @@ public class Marker {
     @Ignore
     public Marker() { }
 
-    public Marker(Long id, Double longitude, Double latitude, String type, String description, String city) {
+    public Marker(Long id, String name, String slug, Double longitude, Double latitude, String type, String description, String city) {
         this.id = id;
+        this.name = name;
+        this.slug = slug;
         this.longitude = longitude;
         this.latitude = latitude;
         this.type = type;
@@ -36,6 +38,22 @@ public class Marker {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getSlug() {
+        return slug;
+    }
+
+    public void setSlug(String slug) {
+        this.slug = slug;
     }
 
     public Double getLongitude() {
@@ -76,5 +94,9 @@ public class Marker {
 
     public String getCity() {
         return city;
+    }
+
+    public LatLng getPosition() {
+        return new LatLng(latitude, longitude);
     }
 }

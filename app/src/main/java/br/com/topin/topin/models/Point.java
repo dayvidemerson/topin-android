@@ -7,6 +7,8 @@ import android.arch.persistence.room.Ignore;
 import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 
+import com.google.android.gms.maps.model.LatLng;
+
 @Entity(
     indices = @Index(value = "line_id", name = "idx_point_line"),
     foreignKeys = @ForeignKey(
@@ -76,5 +78,9 @@ public class Point {
 
     public void setLineId(Long lineId) {
         this.lineId = lineId;
+    }
+
+    public LatLng getPosition() {
+        return new LatLng(latitude, longitude);
     }
 }

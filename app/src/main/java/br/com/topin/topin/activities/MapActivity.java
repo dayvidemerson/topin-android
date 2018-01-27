@@ -22,10 +22,19 @@ import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.PolylineOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 
+import java.util.List;
+
 import br.com.topin.topin.R;
+import br.com.topin.topin.fragments.MarkerListFragment;
+import br.com.topin.topin.fragments.RouteListFragment;
+import br.com.topin.topin.models.Line;
+import br.com.topin.topin.models.Marker;
+import br.com.topin.topin.models.Point;
 
 public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
 
@@ -35,28 +44,29 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     private MapFragment mMapFragment;
     private BottomSheetBehavior mBottomSheetBehavior;
 
+    private Integer mCurrentBottomSheet = -1;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map);
         mMapFragment = new MapFragment();
-        startFragment(mMapFragment);
+        startFragment(mMapFragment, R.id.frame_map);
+        startFragment(new RouteListFragment(), R.id.frame_bottom_map);
         setUpMap();
         setUpBottomNavigation();
     }
 
-    public void startFragment(Fragment fragment) {
+    public void startFragment(Fragment fragment, int i) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
-        fragmentTransaction.replace(R.id.frame_map, fragment);
+        fragmentTransaction.replace(i, fragment);
         fragmentTransaction.commit();
     }
 
     @Override
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
-        LatLng sydney = new LatLng(-34, 151);
-        mMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
         setUpLocation();
     }
 
@@ -95,6 +105,23 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    private void moveCameraLine(Line line) {
+        Point first = line.getPoints().get(0);
+        Point last = line.getPoints().get(line.getPoints().size() - 1);
+        LatLng start;
+        LatLng end;
+        if (first.getLatitude() < last.getLatitude()) {
+            start = new LatLng(first.getLatitude(), first.getLongitude());
+            end = new LatLng(last.getLatitude(), last.getLongitude());
+        } else {
+            start = new LatLng(last.getLatitude(), last.getLongitude());
+            end = new LatLng(first.getLatitude(), first.getLongitude());
+        }
+
+        LatLngBounds latLngBounds = new LatLngBounds(start, end);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngBounds.getCenter(), 12));
+    }
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         switch (requestCode) {
@@ -117,11 +144,61 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
     }
 
+    public void setMarkers(List<Marker> markers) {
+        mMap.clear();
+        for (Marker marker: markers) {
+            MarkerOptions markerOptions = new MarkerOptions().position(marker.getPosition()).title(marker.getName());
+            mMap.addMarker(markerOptions);
+        }
+    }
+
+    public void setLine(Line line) {
+        mMap.clear();
+        PolylineOptions polylineOptions = new PolylineOptions();
+
+        for (Point point: line.getPoints()) {
+            polylineOptions.add(point.getPosition());
+        }
+
+        mMap.addPolyline(polylineOptions);
+
+        moveCameraLine(line);
+
+        mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            toogleBottomSheet();
+            switch (item.getItemId()) {
+                case R.id.navigation_routes:
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                        toogleBottomSheet();
+                    }
+
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED
+                            && item.getItemId() == mCurrentBottomSheet) {
+                        toogleBottomSheet();
+                    } else {
+                        mCurrentBottomSheet = item.getItemId();
+                        startFragment(new RouteListFragment(), R.id.frame_bottom_map);
+                    }
+                    break;
+                case R.id.navigation_points:
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                        toogleBottomSheet();
+                    }
+
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED
+                            && item.getItemId() == mCurrentBottomSheet) {
+                        toogleBottomSheet();
+                    } else {
+                        mCurrentBottomSheet = item.getItemId();
+                        startFragment(new MarkerListFragment(), R.id.frame_bottom_map);
+                    }
+                    break;
+            }
             return true;
         }
     };

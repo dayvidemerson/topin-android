@@ -54,7 +54,7 @@ public class StateAdapter extends RecyclerView.Adapter<StateAdapter.ViewHolder> 
             super(itemView);
             itemView.setOnClickListener(this);
 
-            txtName = itemView.findViewById(R.id.txtRegionLineName);
+            txtName = itemView.findViewById(R.id.txt_region_line_name);
             radioRegion = itemView.findViewById(R.id.radioRegion);
 
             radioRegion.setOnClickListener(new View.OnClickListener() {

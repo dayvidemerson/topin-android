@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "4b34278028402478d797225c959d8d0c",
+    "identityHash": "720bc00e332ef75b9c7e56a185579211",
     "entities": [
       {
         "tableName": "Line",
@@ -44,12 +44,24 @@
       },
       {
         "tableName": "Marker",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `longitude` REAL, `latitude` REAL, `type` TEXT, `description` TEXT, `city` TEXT, PRIMARY KEY(`id`))",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `name` TEXT, `slug` TEXT, `longitude` REAL, `latitude` REAL, `type` TEXT, `description` TEXT, `city` TEXT, PRIMARY KEY(`id`))",
         "fields": [
           {
             "fieldPath": "id",
             "columnName": "id",
             "affinity": "INTEGER",
+            "notNull": false
+          },
+          {
+            "fieldPath": "name",
+            "columnName": "name",
+            "affinity": "TEXT",
+            "notNull": false
+          },
+          {
+            "fieldPath": "slug",
+            "columnName": "slug",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -186,13 +198,13 @@
             "notNull": false
           },
           {
-            "fieldPath": "frontId",
+            "fieldPath": "front",
             "columnName": "front_id",
             "affinity": "INTEGER",
             "notNull": false
           },
           {
-            "fieldPath": "backId",
+            "fieldPath": "back",
             "columnName": "back_id",
             "affinity": "INTEGER",
             "notNull": false
@@ -309,7 +321,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"4b34278028402478d797225c959d8d0c\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"720bc00e332ef75b9c7e56a185579211\")"
     ]
   }
 }

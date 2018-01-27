@@ -6,7 +6,7 @@
     android:layout_height="@dimen/list_item_height">
 
     <TextView
-        android:id="@+id/txtRegionLineName"
+        android:id="@+id/txt_region_line_name"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"

@@ -13,4 +13,12 @@
     <string name="title_points">Pontos</string>
     <string name="title_routes">Rotas</string>
     <string name="routes">Rotas</string>
+    <string name="line">linha</string>
+    <string name="sunday">Domingo</string>
+    <string name="monday">Segunda</string>
+    <string name="tuesday">Terça</string>
+    <string name="wednesday">Quarta</string>
+    <string name="thursday">Quinta</string>
+    <string name="friday">Sexta</string>
+    <string name="saturday">Sábado</string>
 </resources>

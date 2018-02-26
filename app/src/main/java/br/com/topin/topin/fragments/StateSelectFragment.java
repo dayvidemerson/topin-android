@@ -1,8 +1,6 @@
 package br.com.topin.topin.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,8 +17,6 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.com.topin.topin.R;
-import br.com.topin.topin.activities.MainActivity;
-import br.com.topin.topin.activities.MapActivity;
 import br.com.topin.topin.adapters.recycler.StateAdapter;
 import br.com.topin.topin.models.State;
 import br.com.topin.topin.services.StateService;
@@ -29,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class StateSelectFragment extends Fragment {
+public class StateSelectFragment extends BaseFragment {
     private List<State> mStates;
     private StateAdapter mStateAdapter;
     private SharedPreferences sharedPreferences;
@@ -44,13 +40,10 @@ public class StateSelectFragment extends Fragment {
         String state = sharedPreferences.getString(getString(R.string.state), null);
 
         if (city != null) {
-            Intent intent = new Intent(getActivity(), MapActivity.class);
-            startActivity(intent);
+            startFragment(new LineListFragment());
         } else if (state != null) {
-            ((MainActivity) getActivity()).startFragment(new CitySelectFragment());
+            startFragment(new CitySelectFragment());
         }
-
-
     }
 
     @Nullable
@@ -77,7 +70,7 @@ public class StateSelectFragment extends Fragment {
 
     private void loadStates() {
         StateService service = Api.getRetrofit().create(StateService.class);
-        ((MainActivity) getActivity()).openProgress();
+        openProgress();
         service.all().enqueue(callbackStates);
     }
 
@@ -97,13 +90,19 @@ public class StateSelectFragment extends Fragment {
                     SharedPreferences.Editor editor = sharedPreferences.edit();
                     editor.putString(getString(R.string.state), state.getSlug());
                     editor.apply();
-                    ((MainActivity) getActivity()).startFragment(new CitySelectFragment());
+                    startFragment(new CitySelectFragment());
                 }
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        closeProgress();
     }
 
     private Callback<List<State>> callbackStates = new Callback<List<State>>() {
@@ -113,11 +112,13 @@ public class StateSelectFragment extends Fragment {
             if (response.isSuccessful()) {
                 mStates = response.body();
                 mStateAdapter.setStates(mStates);
-                ((MainActivity) getActivity()).closeProgress();
             }
+            closeProgress();
         }
 
         @Override
-        public void onFailure(@NonNull Call<List<State>> call, @NonNull Throwable t) { }
+        public void onFailure(@NonNull Call<List<State>> call, @NonNull Throwable t) {
+            closeProgress();
+        }
     };
 }

@@ -1,6 +1,5 @@
 package br.com.topin.topin.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -9,6 +8,7 @@ import android.support.annotation.Nullable;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,34 +16,30 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.com.topin.topin.R;
-import br.com.topin.topin.activities.MapActivity;
-import br.com.topin.topin.adapters.recycler.RouteAdapter;
-import br.com.topin.topin.models.Route;
-import br.com.topin.topin.services.RouteService;
+import br.com.topin.topin.adapters.recycler.ScheduleAdapter;
+import br.com.topin.topin.models.Schedule;
+import br.com.topin.topin.services.ScheduleService;
 import br.com.topin.topin.util.Api;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RouteListFragment extends Fragment {
-    private List<Route> mRoutes;
-    private RouteAdapter mRouteAdapter;
-    private String mCity;
-
-    private MapActivity mMapActivity;
+public class ScheduleListFragment extends BaseFragment {
+    private List<Schedule> mSchedules;
+    private ScheduleAdapter mScheduleAdapter;
+    private String mLine;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        mCity = sharedPreferences.getString(getString(R.string.city), null);
-        mMapActivity = (MapActivity) getActivity();
+        mLine = sharedPreferences.getString(getString(R.string.line), null);
     }
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.fragment_route, container, false);
+        View v = inflater.inflate(R.layout.fragment_schedule, container, false);
         setupRecycler(v);
         return v;
     }
@@ -51,34 +47,45 @@ public class RouteListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadRoutes();
+        loadLines("sunday");
     }
 
     private void setupRecycler(View view) {
-        final RecyclerView recyclerView = view.findViewById(R.id.recycler_route);
+        final RecyclerView recyclerView = view.findViewById(R.id.recycler_schedule);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        mRouteAdapter = new RouteAdapter(mMapActivity, mRoutes);
-        recyclerView.setAdapter(mRouteAdapter);
+        mScheduleAdapter = new ScheduleAdapter(mSchedules);
+        recyclerView.setAdapter(mScheduleAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
 
-    private void loadRoutes() {
-        RouteService service = Api.getRetrofit().create(RouteService.class);
-        service.filter(mCity).enqueue(callbackRoutes);
+    private void loadLines(String weekday) {
+        ScheduleService service = Api.getRetrofit().create(ScheduleService.class);
+        openProgress();
+        weekday = "{" + weekday + "}";
+        service.filter(mLine, weekday).enqueue(callbackSchedules);
     }
 
-    private Callback<List<Route>> callbackRoutes = new Callback<List<Route>>() {
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        closeProgress();
+    }
+
+    private Callback<List<Schedule>> callbackSchedules = new Callback<List<Schedule>>() {
 
         @Override
-        public void onResponse(@NonNull Call<List<Route>> call, @NonNull Response<List<Route>> response) {
+        public void onResponse(@NonNull Call<List<Schedule>> call, @NonNull Response<List<Schedule>> response) {
             if (response.isSuccessful()) {
-                mRoutes = response.body();
-                mRouteAdapter.setRoutes(mRoutes);
+                mSchedules = response.body();
+                mScheduleAdapter.setSchedules(mSchedules);
             }
+            closeProgress();
         }
 
         @Override
-        public void onFailure(@NonNull Call<List<Route>> call, @NonNull Throwable t) { }
+        public void onFailure(@NonNull Call<List<Schedule>> call, @NonNull Throwable t) {
+            closeProgress();
+        }
     };
 }

@@ -6,6 +6,7 @@ import br.com.topin.topin.models.Line;
 import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface LineService {
     @GET("lines/{id}/")
@@ -13,4 +14,7 @@ public interface LineService {
 
     @GET("lines/")
     Call<List<Line>> all();
+
+    @GET("lines/")
+    Call<List<Line>> filter(@Query("city") String city);
 }

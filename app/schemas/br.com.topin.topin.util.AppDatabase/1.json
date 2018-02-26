@@ -2,7 +2,7 @@
   "formatVersion": 1,
   "database": {
     "version": 1,
-    "identityHash": "720bc00e332ef75b9c7e56a185579211",
+    "identityHash": "23c6b2043c4b2add204807295474a98f",
     "entities": [
       {
         "tableName": "Line",
@@ -261,7 +261,7 @@
       },
       {
         "tableName": "Schedule",
-        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `time` INTEGER, `weekdays` TEXT, `line_id` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`line_id`) REFERENCES `Line`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
+        "createSql": "CREATE TABLE IF NOT EXISTS `${TABLE_NAME}` (`id` INTEGER, `hour` TEXT, `weekdays` TEXT, `line_id` INTEGER, PRIMARY KEY(`id`), FOREIGN KEY(`line_id`) REFERENCES `Line`(`id`) ON UPDATE CASCADE ON DELETE CASCADE )",
         "fields": [
           {
             "fieldPath": "id",
@@ -270,9 +270,9 @@
             "notNull": false
           },
           {
-            "fieldPath": "time",
-            "columnName": "time",
-            "affinity": "INTEGER",
+            "fieldPath": "hour",
+            "columnName": "hour",
+            "affinity": "TEXT",
             "notNull": false
           },
           {
@@ -321,7 +321,7 @@
     ],
     "setupQueries": [
       "CREATE TABLE IF NOT EXISTS room_master_table (id INTEGER PRIMARY KEY,identity_hash TEXT)",
-      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"720bc00e332ef75b9c7e56a185579211\")"
+      "INSERT OR REPLACE INTO room_master_table (id,identity_hash) VALUES(42, \"23c6b2043c4b2add204807295474a98f\")"
     ]
   }
 }

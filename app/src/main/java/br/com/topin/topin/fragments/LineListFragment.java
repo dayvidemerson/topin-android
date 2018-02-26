@@ -1,6 +1,5 @@
 package br.com.topin.topin.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -16,28 +15,25 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.com.topin.topin.R;
-import br.com.topin.topin.activities.MapActivity;
-import br.com.topin.topin.adapters.recycler.RouteAdapter;
-import br.com.topin.topin.models.Route;
-import br.com.topin.topin.services.RouteService;
+import br.com.topin.topin.adapters.recycler.LineAdapter;
+import br.com.topin.topin.models.Line;
+import br.com.topin.topin.services.LineService;
 import br.com.topin.topin.util.Api;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RouteListFragment extends Fragment {
-    private List<Route> mRoutes;
-    private RouteAdapter mRouteAdapter;
+public class LineListFragment extends BaseFragment implements LineAdapter.OnItemClickListener {
+    private List<Line> mLines;
+    private LineAdapter mLineAdapter;
     private String mCity;
-
-    private MapActivity mMapActivity;
+    private SharedPreferences sharedPreferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         mCity = sharedPreferences.getString(getString(R.string.city), null);
-        mMapActivity = (MapActivity) getActivity();
     }
 
     @Nullable
@@ -51,34 +47,52 @@ public class RouteListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadRoutes();
+        loadLines();
     }
 
     private void setupRecycler(View view) {
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_route);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        mRouteAdapter = new RouteAdapter(mMapActivity, mRoutes);
-        recyclerView.setAdapter(mRouteAdapter);
+        mLineAdapter = new LineAdapter(this, mLines);
+        recyclerView.setAdapter(mLineAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
 
-    private void loadRoutes() {
-        RouteService service = Api.getRetrofit().create(RouteService.class);
-        service.filter(mCity).enqueue(callbackRoutes);
+    private void loadLines() {
+        LineService service = Api.getRetrofit().create(LineService.class);
+        openProgress();
+        service.filter(mCity).enqueue(callbackLines);
     }
 
-    private Callback<List<Route>> callbackRoutes = new Callback<List<Route>>() {
+    @Override
+    public void onItemClicked(int position) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.line), mLines.get(position).getSlug());
+        editor.apply();
+        startFragment(new ScheduleListFragment());
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        closeProgress();
+    }
+
+    private Callback<List<Line>> callbackLines = new Callback<List<Line>>() {
 
         @Override
-        public void onResponse(@NonNull Call<List<Route>> call, @NonNull Response<List<Route>> response) {
+        public void onResponse(@NonNull Call<List<Line>> call, @NonNull Response<List<Line>> response) {
             if (response.isSuccessful()) {
-                mRoutes = response.body();
-                mRouteAdapter.setRoutes(mRoutes);
+                mLines = response.body();
+                mLineAdapter.setLines(mLines);
             }
+            closeProgress();
         }
 
         @Override
-        public void onFailure(@NonNull Call<List<Route>> call, @NonNull Throwable t) { }
+        public void onFailure(@NonNull Call<List<Line>> call, @NonNull Throwable t) {
+            closeProgress();
+        }
     };
 }

@@ -1,6 +1,10 @@
 <android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingLeft="@dimen/padding_landscape_horizontal"
+    android:paddingRight="@dimen/padding_landscape_horizontal"
+    android:paddingTop="@dimen/padding_landscape_vertical"
+    android:paddingBottom="@dimen/padding_landscape_vertical"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 

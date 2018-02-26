@@ -22,7 +22,6 @@ import retrofit2.Response;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> {
     private List<Route> mRoutes;
-    private int lastSelectedPosition = -1;
     private MapActivity mMapActivity;
 
     public RouteAdapter(Activity activity, List<Route> routes) {
@@ -46,8 +45,8 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         return mRoutes != null ? mRoutes.size() : 0;
     }
 
-    public void setRoutes(List<Route> mRoutes) {
-        this.mRoutes = mRoutes;
+    public void setRoutes(List<Route> routes) {
+        this.mRoutes = routes;
         notifyDataSetChanged();
     }
 

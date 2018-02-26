@@ -8,11 +8,9 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
-import java.sql.Time;
 import java.util.List;
 
 import br.com.topin.topin.converters.StringListConverter;
-import br.com.topin.topin.converters.TimeConverter;
 
 @Entity(
     indices = @Index(value = "line_id", name = "idx_schedule_line"),
@@ -28,8 +26,7 @@ public class Schedule {
     @PrimaryKey
     private Long id;
 
-    @TypeConverters(TimeConverter.class)
-    private Time time;
+    private String hour;
 
     @TypeConverters(StringListConverter.class)
     private List<String> weekdays;
@@ -40,10 +37,10 @@ public class Schedule {
     @Ignore
     public Schedule() { }
 
-    public Schedule(Long id, List<String> weekdays, Time time, Long lineId) {
+    public Schedule(Long id, List<String> weekdays, String hour, Long lineId) {
         this.id = id;
         this.weekdays = weekdays;
-        this.time = time;
+        this.hour = hour;
         this.lineId = lineId;
     }
 
@@ -63,12 +60,12 @@ public class Schedule {
         this.weekdays = weekdays;
     }
 
-    public Time getTime() {
-        return time;
+    public String getHour() {
+        return hour;
     }
 
-    public void setTime(Time time) {
-        this.time = time;
+    public void setHour(String hour) {
+        this.hour = hour;
     }
 
     public Long getLineId() {

@@ -1,8 +1,6 @@
 package br.com.topin.topin.fragments;
 
-import android.app.Fragment;
 import android.content.Context;
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -19,8 +17,6 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.com.topin.topin.R;
-import br.com.topin.topin.activities.MainActivity;
-import br.com.topin.topin.activities.MapActivity;
 import br.com.topin.topin.adapters.recycler.CityAdapter;
 import br.com.topin.topin.models.City;
 import br.com.topin.topin.services.CityService;
@@ -29,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class CitySelectFragment extends Fragment {
+public class CitySelectFragment extends BaseFragment {
     private List<City> mCities;
     private CityAdapter mCityAdapter;
     private String mState;
@@ -44,8 +40,7 @@ public class CitySelectFragment extends Fragment {
         String city = sharedPreferences.getString(getString(R.string.city), null);
 
         if (city != null) {
-            Intent intent = new Intent(getActivity(), MapActivity.class);
-            startActivity(intent);
+            startFragment(new LineListFragment());
         }
     }
 
@@ -73,7 +68,7 @@ public class CitySelectFragment extends Fragment {
 
     private void loadCities() {
         CityService service = Api.getRetrofit().create(CityService.class);
-        ((MainActivity) getActivity()).openProgress();
+        openProgress();
         service.filter(mState).enqueue(callbackCities);
     }
 
@@ -92,16 +87,21 @@ public class CitySelectFragment extends Fragment {
                 if (city != null) {
                     SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                    editor.putString(getString(R.string.city), city.getName());
+                    editor.putString(getString(R.string.city), city.getSlug());
                     editor.apply();
-                    Intent intent = new Intent(getActivity(), MapActivity.class);
-                    startActivity(intent);
+                    startFragment(new LineListFragment());
                 }
 
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        closeProgress();
     }
 
     private Callback<List<City>> callbackCities = new Callback<List<City>>() {
@@ -111,11 +111,13 @@ public class CitySelectFragment extends Fragment {
             if (response.isSuccessful()) {
                 mCities = response.body();
                 mCityAdapter.setCities(mCities);
-                ((MainActivity) getActivity()).closeProgress();
             }
+            closeProgress();
         }
 
         @Override
-        public void onFailure(@NonNull Call<List<City>> call, @NonNull Throwable t) { }
+        public void onFailure(@NonNull Call<List<City>> call, @NonNull Throwable t) {
+            closeProgress();
+        }
     };
 }

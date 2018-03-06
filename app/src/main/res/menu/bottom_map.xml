@@ -2,14 +2,9 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/navigation_favorites"
-        android:icon="@drawable/ic_star_black_24dp"
-        android:title="@string/title_favorites" />
-
-    <item
         android:id="@+id/navigation_routes"
-        android:icon="@drawable/ic_streetview_black_24dp"
-        android:title="@string/title_routes" />
+        android:icon="@drawable/ic_alarm_black_24dp"
+        android:title="@string/title_schedules" />
 
     <item
         android:id="@+id/navigation_points"

@@ -16,5 +16,5 @@ public interface ScheduleService {
     Call<List<Schedule>> all();
 
     @GET("schedules/")
-    Call<List<Schedule>> filter(@Query("line") String slug, @Query("weekday") String weekday);
+    Call<List<Schedule>> filter(@Query("line") String slug, @Query("weekdays") String weekday);
 }

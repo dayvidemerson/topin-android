@@ -1,6 +1,7 @@
 package br.com.topin.topin.adapters.recycler;
 
 
+import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -30,13 +31,22 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
     }
 
     @Override
-    public void onBindViewHolder(LineAdapter.ViewHolder holder, final int position) {
+    public void onBindViewHolder(LineAdapter.ViewHolder holder, @SuppressLint("RecyclerView") final int position) {
         holder.getTxtName().setText(mLines.get(position).getName());
 
         holder.getItemView().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 ((LineListFragment) mFragment).onItemClicked(position);
+            }
+        });
+
+        holder.getItemView().setOnLongClickListener(new View.OnLongClickListener() {
+
+            @Override
+            public boolean onLongClick(View view) {
+                ((LineListFragment) mFragment).onLongItemClicked(position);
+                return true;
             }
         });
     }
@@ -51,7 +61,7 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
         notifyDataSetChanged();
     }
 
-    class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    class ViewHolder extends RecyclerView.ViewHolder {
         private View itemView;
         private TextView txtName;
 
@@ -59,7 +69,6 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
             super(itemView);
             this.itemView = itemView;
             txtName = itemView.findViewById(R.id.txt_line_name);
-            itemView.setOnClickListener(this);
         }
 
         public TextView getTxtName() {
@@ -69,14 +78,10 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
         public View getItemView() {
             return itemView;
         }
-
-        @Override
-        public void onClick(View view) {
-            Line line = mLines.get(getAdapterPosition());
-        }
     }
 
     public interface OnItemClickListener {
         void onItemClicked(int position);
+        void onLongItemClicked(int position);
     }
 }

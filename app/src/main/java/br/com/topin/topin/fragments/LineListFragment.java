@@ -1,6 +1,7 @@
 package br.com.topin.topin.fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -15,6 +16,7 @@ import android.view.ViewGroup;
 import java.util.List;
 
 import br.com.topin.topin.R;
+import br.com.topin.topin.activities.MapActivity;
 import br.com.topin.topin.adapters.recycler.LineAdapter;
 import br.com.topin.topin.models.Line;
 import br.com.topin.topin.services.LineService;
@@ -71,6 +73,14 @@ public class LineListFragment extends BaseFragment implements LineAdapter.OnItem
         editor.putString(getString(R.string.line), mLines.get(position).getSlug());
         editor.apply();
         startFragment(new ScheduleListFragment());
+    }
+
+    @Override
+    public void onLongItemClicked(int position) {
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString(getString(R.string.line), mLines.get(position).getSlug());
+        editor.apply();
+        startActivity(new Intent(getActivity(), MapActivity.class));
     }
 
     @Override

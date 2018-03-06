@@ -21,4 +21,5 @@
     <string name="thursday">Quinta</string>
     <string name="friday">Sexta</string>
     <string name="saturday">Sábado</string>
+    <string name="title_schedules">Horários</string>
 </resources>

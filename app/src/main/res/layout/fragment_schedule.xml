@@ -7,42 +7,55 @@
     tools:context="br.com.topin.topin.fragments.ScheduleListFragment">
 
     <android.support.design.widget.TabLayout
-        android:id="@+id/tabLayout"
+        android:id="@+id/tab_week"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorPrimary"
+        app:layout_constraintTop_toTopOf="parent"
         app:tabMode="scrollable"
-        app:tabTextColor="@android:color/white"
         app:tabSelectedTextColor="@color/colorAccent"
-        app:layout_constraintTop_toTopOf="parent">
+        app:tabTextColor="@android:color/white">
 
         <android.support.design.widget.TabItem
-            android:layout_height="wrap_content"
+            android:id="@+id/item_sunday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/sunday" />
+
         <android.support.design.widget.TabItem
-            android:layout_height="wrap_content"
+            android:id="@+id/item_monday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/monday" />
+
         <android.support.design.widget.TabItem
-            android:layout_height="wrap_content"
+            android:id="@+id/item_tuesday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/tuesday" />
+
         <android.support.design.widget.TabItem
-            android:layout_height="wrap_content"
+            android:id="@+id/item_wednesday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/wednesday" />
+
         <android.support.design.widget.TabItem
-            android:layout_height="wrap_content"
+            android:id="@+id/item_thursday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/thursday" />
+
         <android.support.design.widget.TabItem
-            android:layout_height="wrap_content"
+            android:id="@+id/item_friday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/friday" />
+
         <android.support.design.widget.TabItem
-            android:layout_height="wrap_content"
+            android:id="@+id/item_saturday"
             android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:text="@string/saturday" />
 
     </android.support.design.widget.TabLayout>
@@ -51,13 +64,9 @@
         android:id="@+id/recycler_schedule"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
         android:layout_marginTop="8dp"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/tabLayout"
-        app:layout_constraintVertical_bias="0.0" />
+        app:layout_constraintTop_toBottomOf="@+id/tab_week" />
 
 </android.support.constraint.ConstraintLayout>

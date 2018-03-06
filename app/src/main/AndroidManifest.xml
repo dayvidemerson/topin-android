@@ -24,6 +24,9 @@
             </intent-filter>
         </activity>
         <activity android:name=".activities.MainActivity" />
+        <activity
+            android:name=".activities.MapActivity"
+            android:parentActivityName=".activities.MainActivity" />
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyC8M04Erpj7392WZZQTixNmsfUVIY-oIkw" />

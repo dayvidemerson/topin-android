@@ -5,11 +5,12 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.TabLayout;
 import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -40,6 +41,8 @@ public class ScheduleListFragment extends BaseFragment {
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_schedule, container, false);
+        TabLayout tabLayout = v.findViewById(R.id.tab_week);
+        tabLayout.addOnTabSelectedListener(tabWeek);
         setupRecycler(v);
         return v;
     }
@@ -86,6 +89,45 @@ public class ScheduleListFragment extends BaseFragment {
         @Override
         public void onFailure(@NonNull Call<List<Schedule>> call, @NonNull Throwable t) {
             closeProgress();
+        }
+    };
+
+    private TabLayout.OnTabSelectedListener tabWeek = new TabLayout.OnTabSelectedListener() {
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            switch (tab.getPosition()) {
+                case 0:
+                    loadLines("sunday");
+                    break;
+                case 1:
+                    loadLines("monday");
+                    break;
+                case 2:
+                    loadLines("tuesday");
+                    break;
+                case 3:
+                    loadLines("wednesday");
+                    break;
+                case 4:
+                    loadLines("thursday");
+                    break;
+                case 5:
+                    loadLines("friday");
+                    break;
+                case 6:
+                    loadLines("saturday");
+                    break;
+            }
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+
         }
     };
 }

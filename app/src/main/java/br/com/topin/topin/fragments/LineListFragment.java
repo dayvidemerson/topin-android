@@ -29,13 +29,13 @@ public class LineListFragment extends BaseFragment implements LineAdapter.OnItem
     private List<Line> mLines;
     private LineAdapter mLineAdapter;
     private String mCity;
-    private SharedPreferences sharedPreferences;
+    private SharedPreferences mSharedPreferences;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
-        mCity = sharedPreferences.getString(getString(R.string.city), null);
+        mSharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
+        mCity = mSharedPreferences.getString(getString(R.string.city), null);
     }
 
     @Nullable
@@ -69,7 +69,7 @@ public class LineListFragment extends BaseFragment implements LineAdapter.OnItem
 
     @Override
     public void onItemClicked(int position) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(getString(R.string.line), mLines.get(position).getSlug());
         editor.apply();
         startFragment(new ScheduleListFragment());
@@ -77,7 +77,7 @@ public class LineListFragment extends BaseFragment implements LineAdapter.OnItem
 
     @Override
     public void onLongItemClicked(int position) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
+        SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(getString(R.string.line), mLines.get(position).getSlug());
         editor.apply();
         startActivity(new Intent(getActivity(), MapActivity.class));

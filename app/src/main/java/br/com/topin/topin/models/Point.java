@@ -9,6 +9,8 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
+
 @Entity(
     indices = @Index(value = "line_id", name = "idx_point_line"),
     foreignKeys = @ForeignKey(
@@ -19,7 +21,7 @@ import com.google.android.gms.maps.model.LatLng;
         onUpdate= ForeignKey.CASCADE
     )
 )
-public class Point {
+public class Point implements Serializable {
     @PrimaryKey
     private Long id;
     private Double longitude;

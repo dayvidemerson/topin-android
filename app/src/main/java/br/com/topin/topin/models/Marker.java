@@ -6,8 +6,10 @@ import android.arch.persistence.room.PrimaryKey;
 
 import com.google.android.gms.maps.model.LatLng;
 
+import java.io.Serializable;
+
 @Entity
-public class Marker {
+public class Marker implements Serializable {
     @PrimaryKey
     private Long id;
     private String name;

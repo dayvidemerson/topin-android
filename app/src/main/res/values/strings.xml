@@ -5,6 +5,7 @@
     <string name="city">cidade</string>
     <string name="state">estado</string>
     <string name="next">Continuar</string>
+    <string name="favorite">Favorito</string>
     <string name="loading">Carregando...</string>
     <string name="title_activity_map">Map</string>
     <string name="title_activity_main2">Main2Activity</string>
@@ -14,6 +15,7 @@
     <string name="title_routes">Rotas</string>
     <string name="routes">Rotas</string>
     <string name="line">linha</string>
+    <string name="line_full">linha_full</string>
     <string name="sunday">Domingo</string>
     <string name="monday">Segunda</string>
     <string name="tuesday">Terça</string>
@@ -22,4 +24,7 @@
     <string name="friday">Sexta</string>
     <string name="saturday">Sábado</string>
     <string name="title_schedules">Horários</string>
+    <string name="title_home">Início</string>
+    <string name="title_feedback">Feedback</string>
 </resources>
+

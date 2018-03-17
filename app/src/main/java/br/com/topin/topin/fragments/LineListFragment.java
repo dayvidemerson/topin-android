@@ -6,7 +6,6 @@ import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -25,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LineListFragment extends BaseFragment implements LineAdapter.OnItemClickListener {
+public class LineListFragment extends BaseFragment{
     private List<Line> mLines;
     private LineAdapter mLineAdapter;
     private String mCity;
@@ -36,6 +35,14 @@ public class LineListFragment extends BaseFragment implements LineAdapter.OnItem
         super.onCreate(savedInstanceState);
         mSharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         mCity = mSharedPreferences.getString(getString(R.string.city), null);
+        String mState = mSharedPreferences.getString(getString(R.string.state), null);
+        getActivity().setTitle("Linhas de Ônibus de "+ capitalize(mCity));
+    }
+
+
+    private String capitalize(String string){
+        String cap = string.substring(0, 1).toUpperCase() + string.substring(1);
+        return cap;
     }
 
     @Nullable
@@ -58,7 +65,6 @@ public class LineListFragment extends BaseFragment implements LineAdapter.OnItem
         recyclerView.setLayoutManager(layoutManager);
         mLineAdapter = new LineAdapter(this, mLines);
         recyclerView.setAdapter(mLineAdapter);
-        recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
 
     private void loadLines() {
@@ -67,21 +73,16 @@ public class LineListFragment extends BaseFragment implements LineAdapter.OnItem
         service.filter(mCity).enqueue(callbackLines);
     }
 
-    @Override
     public void onItemClicked(int position) {
         SharedPreferences.Editor editor = mSharedPreferences.edit();
         editor.putString(getString(R.string.line), mLines.get(position).getSlug());
         editor.apply();
-        startFragment(new ScheduleListFragment());
+        Intent intent = new Intent(getActivity(), MapActivity.class);
+        intent.putExtra(getString(R.string.line_full), mLines.get(position));
+        startActivity(intent);
+
     }
 
-    @Override
-    public void onLongItemClicked(int position) {
-        SharedPreferences.Editor editor = mSharedPreferences.edit();
-        editor.putString(getString(R.string.line), mLines.get(position).getSlug());
-        editor.apply();
-        startActivity(new Intent(getActivity(), MapActivity.class));
-    }
 
     @Override
     public void onDestroy() {

@@ -4,16 +4,23 @@ import android.Manifest;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.v4.app.ActivityCompat;
-import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.LinearLayout;
+import android.widget.TextView;
+
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -21,6 +28,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
@@ -32,11 +40,13 @@ import java.util.List;
 import br.com.topin.topin.R;
 import br.com.topin.topin.fragments.MarkerListFragment;
 import br.com.topin.topin.fragments.RouteListFragment;
+import br.com.topin.topin.fragments.ScheduleListFragment;
 import br.com.topin.topin.models.Line;
 import br.com.topin.topin.models.Marker;
 import br.com.topin.topin.models.Point;
+import br.com.topin.topin.util.BottomNavigationViewHelper;
 
-public class MapActivity extends AppCompatActivity implements OnMapReadyCallback {
+public class MapActivity extends BaseActivity implements OnMapReadyCallback {
 
     private static final int LOCATION_REQUEST_CODE = 1;
     private GoogleMap mMap;
@@ -57,6 +67,26 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         setUpBottomNavigation();
     }
 
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.menu_favorite, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.action_favorite:
+                Log.i("#######", "Menu favorito clicado");
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+
     public void startFragment(Fragment fragment, int i) {
         FragmentManager fragmentManager = getFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
@@ -68,6 +98,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
         setUpLocation();
+        Line linha = (Line) getIntent().getSerializableExtra(getString(R.string.line_full));
+        if(linha != null){
+            setLine(linha);
+        }
     }
 
     private void setUpMap() {
@@ -76,6 +110,8 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
 
     private void setUpBottomNavigation() {
         BottomNavigationView navigation = findViewById(R.id.bottom_navigation_map);
+
+        BottomNavigationViewHelper.disableShiftMode(navigation);
         navigation.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
         LinearLayout bottomSheetMap = findViewById(R.id.bottom_sheet_map);
         mBottomSheetBehavior = BottomSheetBehavior.from(bottomSheetMap);
@@ -98,7 +134,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         public void onSuccess(Location location) {
                             if (location != null) {
                                 LatLng position = new LatLng(location.getLatitude(), location.getLongitude());
-                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 10));
+                                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(position, 14));
                             }
                         }
                     });
@@ -119,7 +155,7 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         }
 
         LatLngBounds latLngBounds = new LatLngBounds(start, end);
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngBounds.getCenter(), 12));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLngBounds.getCenter(), 14));
     }
 
     @Override
@@ -145,7 +181,6 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void setMarkers(List<Marker> markers) {
-        mMap.clear();
         for (Marker marker: markers) {
             MarkerOptions markerOptions = new MarkerOptions().position(marker.getPosition()).title(marker.getName());
             mMap.addMarker(markerOptions);
@@ -153,8 +188,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
     }
 
     public void setLine(Line line) {
+        setTitle(line.getName());
         mMap.clear();
         PolylineOptions polylineOptions = new PolylineOptions();
+
+        polylineOptions.color(Color.RED);
+        polylineOptions.width(5);
+
+        MarkerOptions saida = new MarkerOptions().position(line.getPoints().get(0).getPosition()).title("Início da linha "+line.getName().split(" ")[0]);
+        saida.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+        mMap.addMarker(saida);
+
+        MarkerOptions onibus = new MarkerOptions().position(line.getPoints().get(line.getPoints().size() / 2).getPosition()).title("Ônibus");
+        onibus.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_directions_bus_black_24dp));
+        mMap.addMarker(onibus);
+
+        MarkerOptions chegada = new MarkerOptions().position(line.getPoints().get(line.getPoints().size()-1).getPosition()).title("Fim da linha "+line.getName().split(" ")[0]);
+        chegada.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_ORANGE));
+        mMap.addMarker(chegada);
 
         for (Point point: line.getPoints()) {
             polylineOptions.add(point.getPosition());
@@ -167,12 +218,22 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
         mBottomSheetBehavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
 
+
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+            Toolbar toolbar = findViewById(R.id.sheet_toolbar);
+            TextView toolbarTitle = (TextView) toolbar.findViewById(R.id.toolbar_title);
             switch (item.getItemId()) {
+                case R.id.navigation_home:
+                    Intent intent = new Intent(MapActivity.this, MainActivity.class);
+                    startActivity(intent);
+                    finish();
+                    break;
+
                 case R.id.navigation_routes:
+                    toolbarTitle.setText(R.string.title_lines);
                     if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                         toogleBottomSheet();
                     }
@@ -185,7 +246,24 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         startFragment(new RouteListFragment(), R.id.frame_bottom_map);
                     }
                     break;
+
+                case R.id.navigation_schedule:
+                    toolbarTitle.setText(R.string.title_schedules);
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                        toogleBottomSheet();
+                    }
+
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED
+                            && item.getItemId() == mCurrentBottomSheet) {
+                        toogleBottomSheet();
+                    } else {
+                        mCurrentBottomSheet = item.getItemId();
+                        startFragment(new ScheduleListFragment(), R.id.frame_bottom_map);
+                    }
+                    break;
+
                 case R.id.navigation_points:
+                    toolbarTitle.setText(R.string.title_points);
                     if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
                         toogleBottomSheet();
                     }
@@ -197,6 +275,10 @@ public class MapActivity extends AppCompatActivity implements OnMapReadyCallback
                         mCurrentBottomSheet = item.getItemId();
                         startFragment(new MarkerListFragment(), R.id.frame_bottom_map);
                     }
+                    break;
+
+                case R.id.navigation_feedback:
+                    toolbarTitle.setText(R.string.title_feedback);
                     break;
             }
             return true;

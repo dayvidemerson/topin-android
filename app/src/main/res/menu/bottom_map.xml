@@ -2,7 +2,17 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
+        android:id="@+id/navigation_home"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="@string/title_home" />
+
+    <item
         android:id="@+id/navigation_routes"
+        android:icon="@drawable/ic_directions_bus_black_24dp"
+        android:title="@string/title_lines" />
+
+    <item
+        android:id="@+id/navigation_schedule"
         android:icon="@drawable/ic_alarm_black_24dp"
         android:title="@string/title_schedules" />
 
@@ -10,5 +20,10 @@
         android:id="@+id/navigation_points"
         android:icon="@drawable/ic_location_on_black_24dp"
         android:title="@string/title_points" />
+
+    <item
+        android:id="@+id/navigation_feedback"
+        android:icon="@drawable/ic_feedback_black_24dp"
+        android:title="@string/title_feedback" />
 
 </menu>

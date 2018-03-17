@@ -38,6 +38,7 @@ public class CitySelectFragment extends BaseFragment {
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         mState = sharedPreferences.getString(getString(R.string.state), null);
         String city = sharedPreferences.getString(getString(R.string.city), null);
+        getActivity().setTitle("Escolha sua Cidade");
 
         if (city != null) {
             startFragment(new LineListFragment());

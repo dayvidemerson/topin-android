@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import java.util.Calendar;
 import java.util.List;
 
 import br.com.topin.topin.R;
@@ -41,9 +42,16 @@ public class ScheduleListFragment extends BaseFragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_schedule, container, false);
         TabLayout tabLayout = v.findViewById(R.id.tab_week);
+        TabLayout.Tab tab = tabLayout.getTabAt(getCurrentDayOfWeek());
+        tab.select();
         tabLayout.addOnTabSelectedListener(tabWeek);
         setupRecycler(v);
         return v;
+    }
+
+    private int getCurrentDayOfWeek(){
+        Calendar calendar = Calendar.getInstance();
+        return calendar.get(Calendar.DAY_OF_WEEK)-1;
     }
 
     @Override
@@ -129,4 +137,5 @@ public class ScheduleListFragment extends BaseFragment {
 
         }
     };
+
 }

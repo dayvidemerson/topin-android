@@ -1,10 +1,10 @@
 package br.com.topin.topin.activities;
 
 import android.app.Dialog;
+import android.graphics.drawable.ColorDrawable;
 import android.app.Fragment;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
-import android.graphics.drawable.ColorDrawable;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Window;
 
@@ -32,4 +32,5 @@ public class BaseActivity extends AppCompatActivity {
     public void closeProgress() {
         mDialog.dismiss();
     }
+
 }

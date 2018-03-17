@@ -2,7 +2,6 @@ package br.com.topin.topin.adapters.recycler;
 
 import android.app.Activity;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,18 +12,12 @@ import java.util.List;
 import br.com.topin.topin.R;
 import br.com.topin.topin.activities.MapActivity;
 import br.com.topin.topin.models.Line;
-import br.com.topin.topin.models.Route;
-import br.com.topin.topin.services.LineService;
-import br.com.topin.topin.util.Api;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> {
-    private List<Route> mRoutes;
+    private List<Line> mRoutes;
     private MapActivity mMapActivity;
 
-    public RouteAdapter(Activity activity, List<Route> routes) {
+    public RouteAdapter(Activity activity, List<Line> routes) {
         this.mMapActivity = (MapActivity) activity;
         this.mRoutes = routes;
     }
@@ -45,7 +38,7 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
         return mRoutes != null ? mRoutes.size() : 0;
     }
 
-    public void setRoutes(List<Route> routes) {
+    public void setLines(List<Line> routes) {
         this.mRoutes = routes;
         notifyDataSetChanged();
     }
@@ -65,23 +58,11 @@ public class RouteAdapter extends RecyclerView.Adapter<RouteAdapter.ViewHolder> 
 
         @Override
         public void onClick(View view) {
-            Route route = mRoutes.get(getAdapterPosition());
+            Line route = mRoutes.get(getAdapterPosition());
+            mMapActivity.setLine(route);
 
-            LineService service = Api.getRetrofit().create(LineService.class);
-
-            service.get(route.getFront()).enqueue(callbackLine);
         }
 
-        private Callback<Line> callbackLine = new Callback<Line>() {
-            @Override
-            public void onResponse(Call<Line> call, Response<Line> response) {
-                mMapActivity.setLine(response.body());
-            }
 
-            @Override
-            public void onFailure(Call<Line> call, Throwable t) {
-                t.printStackTrace();
-            }
-        };
     }
 }

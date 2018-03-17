@@ -8,6 +8,7 @@ import android.arch.persistence.room.Index;
 import android.arch.persistence.room.PrimaryKey;
 import android.arch.persistence.room.TypeConverters;
 
+import java.io.Serializable;
 import java.util.List;
 
 import br.com.topin.topin.converters.StringListConverter;
@@ -22,7 +23,7 @@ import br.com.topin.topin.converters.StringListConverter;
             onUpdate= ForeignKey.CASCADE
     )
 )
-public class Schedule {
+public class Schedule implements Serializable {
     @PrimaryKey
     private Long id;
 

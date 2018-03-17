@@ -1,6 +1,6 @@
 package br.com.topin.topin.fragments;
 
-import android.app.Fragment;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -25,7 +25,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MarkerListFragment extends Fragment {
+public class MarkerListFragment extends BaseFragment {
     private List<Marker> mMarkers;
     private MarkerAdapter mMarkerAdapter;
     private String mCity;

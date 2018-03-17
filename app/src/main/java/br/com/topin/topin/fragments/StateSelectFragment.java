@@ -44,6 +44,7 @@ public class StateSelectFragment extends BaseFragment {
         } else if (state != null) {
             startFragment(new CitySelectFragment());
         }
+        getActivity().setTitle("Escolha sua UF");
     }
 
     @Nullable

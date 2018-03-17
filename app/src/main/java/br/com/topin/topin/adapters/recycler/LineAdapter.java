@@ -1,6 +1,5 @@
 package br.com.topin.topin.adapters.recycler;
 
-
 import android.annotation.SuppressLint;
 import android.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -41,14 +40,8 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
             }
         });
 
-        holder.getItemView().setOnLongClickListener(new View.OnLongClickListener() {
 
-            @Override
-            public boolean onLongClick(View view) {
-                ((LineListFragment) mFragment).onLongItemClicked(position);
-                return true;
-            }
-        });
+
     }
 
     @Override
@@ -65,10 +58,12 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
         private View itemView;
         private TextView txtName;
 
+
         ViewHolder(View itemView) {
             super(itemView);
             this.itemView = itemView;
-            txtName = itemView.findViewById(R.id.txt_line_name);
+            this.txtName = itemView.findViewById(R.id.txt_line_name);
+
         }
 
         public TextView getTxtName() {
@@ -78,10 +73,13 @@ public class LineAdapter extends RecyclerView.Adapter<LineAdapter.ViewHolder> {
         public View getItemView() {
             return itemView;
         }
+
     }
 
     public interface OnItemClickListener {
         void onItemClicked(int position);
         void onLongItemClicked(int position);
     }
+
+
 }

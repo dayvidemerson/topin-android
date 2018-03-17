@@ -1,6 +1,6 @@
 package br.com.topin.topin.fragments;
 
-import android.app.Fragment;
+
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -18,15 +18,15 @@ import java.util.List;
 import br.com.topin.topin.R;
 import br.com.topin.topin.activities.MapActivity;
 import br.com.topin.topin.adapters.recycler.RouteAdapter;
-import br.com.topin.topin.models.Route;
-import br.com.topin.topin.services.RouteService;
+import br.com.topin.topin.models.Line;
+import br.com.topin.topin.services.LineService;
 import br.com.topin.topin.util.Api;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class RouteListFragment extends Fragment {
-    private List<Route> mRoutes;
+public class RouteListFragment extends BaseFragment {
+    private List<Line> mLines;
     private RouteAdapter mRouteAdapter;
     private String mCity;
 
@@ -38,6 +38,7 @@ public class RouteListFragment extends Fragment {
         SharedPreferences sharedPreferences = getActivity().getPreferences(Context.MODE_PRIVATE);
         mCity = sharedPreferences.getString(getString(R.string.city), null);
         mMapActivity = (MapActivity) getActivity();
+        
     }
 
     @Nullable
@@ -51,34 +52,45 @@ public class RouteListFragment extends Fragment {
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        loadRoutes();
+        loadLines();
     }
 
     private void setupRecycler(View view) {
         final RecyclerView recyclerView = view.findViewById(R.id.recycler_route);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
         recyclerView.setLayoutManager(layoutManager);
-        mRouteAdapter = new RouteAdapter(mMapActivity, mRoutes);
+        mRouteAdapter = new RouteAdapter(mMapActivity, mLines);
         recyclerView.setAdapter(mRouteAdapter);
         recyclerView.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
     }
-
-    private void loadRoutes() {
-        RouteService service = Api.getRetrofit().create(RouteService.class);
-        service.filter(mCity).enqueue(callbackRoutes);
+    private void loadLines() {
+        LineService service = Api.getRetrofit().create(LineService.class);
+        openProgress();
+        service.filter(mCity).enqueue(callbackLines);
     }
 
-    private Callback<List<Route>> callbackRoutes = new Callback<List<Route>>() {
+
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        closeProgress();
+    }
+
+    private Callback<List<Line>> callbackLines = new Callback<List<Line>>() {
 
         @Override
-        public void onResponse(@NonNull Call<List<Route>> call, @NonNull Response<List<Route>> response) {
+        public void onResponse(@NonNull Call<List<Line>> call, @NonNull Response<List<Line>> response) {
             if (response.isSuccessful()) {
-                mRoutes = response.body();
-                mRouteAdapter.setRoutes(mRoutes);
+                mLines = response.body();
+                mRouteAdapter.setLines(mLines);
             }
+            closeProgress();
         }
 
         @Override
-        public void onFailure(@NonNull Call<List<Route>> call, @NonNull Throwable t) { }
+        public void onFailure(@NonNull Call<List<Line>> call, @NonNull Throwable t) {
+            closeProgress();
+        }
     };
 }

@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import java.util.List;
 
 import br.com.topin.topin.R;
+import br.com.topin.topin.fragments.FeedbackFragment;
 import br.com.topin.topin.fragments.MarkerListFragment;
 import br.com.topin.topin.fragments.RouteListFragment;
 import br.com.topin.topin.fragments.ScheduleListFragment;
@@ -279,7 +280,20 @@ public class MapActivity extends BaseActivity implements OnMapReadyCallback {
 
                 case R.id.navigation_feedback:
                     toolbarTitle.setText(R.string.title_feedback);
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+                        toogleBottomSheet();
+                    }
+
+                    if (mBottomSheetBehavior.getState() == BottomSheetBehavior.STATE_COLLAPSED
+                            && item.getItemId() == mCurrentBottomSheet) {
+                        toogleBottomSheet();
+                    } else {
+                        mCurrentBottomSheet = item.getItemId();
+                        startFragment(new FeedbackFragment(), R.id.frame_bottom_map);
+                    }
+
                     break;
+
             }
             return true;
         }

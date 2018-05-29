@@ -26,5 +26,11 @@
     <string name="title_schedules">Horários</string>
     <string name="title_home">Início</string>
     <string name="title_feedback">Feedback</string>
+    <string name="form_name">Nome</string>
+    <string name="form_email">E-mail</string>
+    <string name="form_contact">Contato</string>
+    <string name="form_reason">Motivo</string>
+    <string name="form_message">Mensagem</string>
+    <string name="txt_send">Enviar</string>
 </resources>
 

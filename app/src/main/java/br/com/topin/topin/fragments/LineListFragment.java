@@ -24,7 +24,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class LineListFragment extends BaseFragment{
+public class LineListFragment extends BaseFragment {
     private List<Line> mLines;
     private LineAdapter mLineAdapter;
     private String mCity;
